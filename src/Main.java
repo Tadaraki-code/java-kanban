@@ -75,6 +75,30 @@ public class Main {
         manager.cleanAllEpics();
         manager.printAllTasks();
 
+        Epic testEpic = new Epic("Name", "Description");
+        int testEpicId = manager.addNewEpic(testEpic);
+        System.out.println(manager.getEpic(testEpicId));
+        Subtask testSubtask = new Subtask("Test", "Test_test", TaskStatus.NEW, testEpicId);
+        int testSubtaskId = manager.addNewSubtask(testSubtask);
+        System.out.println(manager.getEpic(testEpicId));
+
+        manager.updateSubtask(new Subtask("Test", "Test_test",
+                testSubtaskId ,TaskStatus.IN_PROGRESS, testEpicId));
+        System.out.println(manager.getEpic(testEpicId));
+
+        manager.updateSubtask(new Subtask("Test", "Test_test",
+                testSubtaskId ,TaskStatus.DONE, epicTwoId));
+
+        manager.updateSubtask(new Subtask("Test", "Test_test",9 ,TaskStatus.DONE, epicTwoId));
+        manager.updateSubtask(new Subtask("Test_Done", "Test_test_Done",
+                testSubtaskId ,TaskStatus.DONE, testEpicId));
+        System.out.println(manager.getSubtask(testSubtaskId));
+        manager.updateEpic(new Epic("New Name", "New Description", testEpicId));
+        System.out.println(manager.getEpic(testEpicId));
+        manager.removeEpic(testEpicId);
+        System.out.println(manager.getSubtask(testSubtaskId));
+        System.out.println(manager.getEpic(testEpicId));
+
 
     }
 }

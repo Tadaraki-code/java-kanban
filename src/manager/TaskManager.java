@@ -32,7 +32,12 @@ public class TaskManager {
     }
 
     public void updateTask(Task task) {
+        if(tasks.get(task.getId()) == null){
+            System.out.println("Такой задачи нету, введите корректный id задачи для её обновления.");
+            return;
+        }
         tasks.put(task.getId(),task);
+
     }
 
     public void removeTask(int id) {
@@ -59,18 +64,23 @@ public class TaskManager {
 
     public Epic getEpic(int id) {
         if(epics.get(id) == null) {
-            System.out.println("Такой задачи нет");
-            return null;
+            System.out.println("Такого эпика нет.");
+            return epics.get(id);
         }
         return epics.get(id);
     }
 
     public void updateEpic(Epic epic) {
-        epics.put(epic.getId(),epic);
+        if(epics.get(epic.getId()) == null) {
+            System.out.println("Такого эпика нет.");
+            return;
+        }
+        epics.get(epic.getId()).setName(epic.getName());
+        epics.get(epic.getId()).setDescription(epic.getDescription());
         updateEpicStatus(epic);
     }
 
-    public void updateEpicStatus(Epic epic) {
+    private void updateEpicStatus(Epic epic) {
        ArrayList<Integer> subtaskIdList = epic.getSubtaskList();
        ArrayList<TaskStatus> subtaskStatus = new ArrayList<>();
 
@@ -104,10 +114,10 @@ public class TaskManager {
             ArrayList<Integer> subtasksId = epic.getSubtaskList();
             for (Integer subtaskId : subtasksId) {
                 subtasks.remove(subtaskId);
-                epics.remove(id);
             }
+            epics.remove(id);
         }else {
-            System.out.println("Такого этика нет!");
+            System.out.println("Такого этика нет.");
         }
     }
 
@@ -148,23 +158,36 @@ public class TaskManager {
 
     public Subtask getSubtask(int id) {
         if(subtasks.get(id) == null) {
-            System.out.println("Такой задачи нет!");
+            System.out.println("Такой подзадачи нет!");
             return null;
         }
         return subtasks.get(id);
     }
 
     public void updateSubtask(Subtask subtask) {
-        subtasks.put(subtask.getId(), subtask);
-        Epic epic = epics.get(subtask.getEpicId());
-        updateEpicStatus(epic);
+        if(subtasks.get(subtask.getId()) == null) {
+            System.out.println("Такой подзадачи нет, введите коректный id подзадачи.");
+            return;
+        }
+        if(subtasks.get(subtask.getId()).getEpicId() == subtask.getEpicId()) {
+            subtasks.put(subtask.getId(), subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            updateEpicStatus(epic);
+        }else {
+            System.out.println("Подзадача с таким id пренадлежит другому эпику,введитие коректный id эпика." );
+        }
     }
 
     public void removeSubtask(int id) {
-        Subtask subtask = subtasks.get(id);
-        Epic epic = epics.get(subtask.getEpicId());
-        subtasks.remove(id);
-        updateEpicStatus(epic);
+        if(subtasks.get(id) != null) {
+            Subtask subtask = subtasks.get(id);
+            Epic epic = epics.get(subtask.getEpicId());
+            subtasks.remove(id);
+            epic.removeElementFromIdList(id);
+            updateEpicStatus(epic);
+        }else {
+            System.out.println("Такой подзадачи нет.");
+        }
     }
 
     public void cleanAllSubtask() {
