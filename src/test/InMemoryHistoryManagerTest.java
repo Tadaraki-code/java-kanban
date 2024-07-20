@@ -6,6 +6,7 @@ import manager.*;
 import tasks.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,7 @@ class InMemoryHistoryManagerTest {
         manager.getTask(taskOneId);
         taskOne = new Task("Task name changed", "Task description changed",taskOneId ,TaskStatus.IN_PROGRESS);
         manager.updateTask(taskOne);
-        ArrayList<Task> historyList = manager.getHistory();
+        List<Task> historyList = manager.getHistory();
 
         assertNotEquals(historyList.getFirst().getName(),manager.getTask(taskOneId).getName());
         assertNotEquals(historyList.getFirst().getDescription(),manager.getTask(taskOneId).getDescription());

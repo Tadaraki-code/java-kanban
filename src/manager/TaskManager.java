@@ -19,7 +19,7 @@ public interface TaskManager {
 
     void cleanAllTasks();
 
-    ArrayList<Task> getTasksList();
+    List<Task> getTasksList();
 
     //Методы для класс Epic
     int addNewEpic(Epic epic);
@@ -32,9 +32,9 @@ public interface TaskManager {
 
     void cleanAllEpics();
 
-    ArrayList<Epic> getEpicsList();
+    List<Epic> getEpicsList();
 
-    ArrayList<Subtask> getAllSubtask(Epic epic);
+    List<Subtask> getAllSubtask(Epic epic);
 
     //Методы для класса SubTask
     Integer addNewSubtask(Subtask subtask);
@@ -47,9 +47,9 @@ public interface TaskManager {
 
     void cleanAllSubtask();
 
-    ArrayList<Subtask> getSubtasksList();
+    List<Subtask> getSubtasksList();
 
     void printAllTasks();
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }

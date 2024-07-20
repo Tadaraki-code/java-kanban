@@ -76,7 +76,7 @@ public class Main {
         Epic epicOneUpdate = new Epic("Epic Update name", "Epic description",epicOneId);
         manager.updateEpic(epicOneUpdate);
         manager.getEpic(epicOneId);
-
+        manager.removeSubtask(subtaskTwoId);
         printAllTasks(manager);
 
 
