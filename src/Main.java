@@ -63,7 +63,7 @@ public class Main {
         System.out.println();
 
 
-        manager.removeTask(taskOneId);;
+        manager.removeTask(taskOneId);
         manager.removeSubtask(subtaskOneId);
         manager.getEpic(epicOneId);
 
