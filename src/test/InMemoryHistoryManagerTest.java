@@ -20,7 +20,7 @@ class InMemoryHistoryManagerTest {
         int taskOneId = manager.addNewTask(taskOne);
         manager.getTask(taskOneId);
 
-        taskOne = new Task("Task name changed", "Task description changed", taskOneId ,TaskStatus.IN_PROGRESS);
+        taskOne = new Task("Task name changed", "Task description changed", taskOneId, TaskStatus.IN_PROGRESS);
         manager.updateTask(taskOne);
 
         List<Task> historyList = manager.getHistory();
