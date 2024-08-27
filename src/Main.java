@@ -151,6 +151,7 @@ public class Main {
 
 
     }
+
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasksList()) {
