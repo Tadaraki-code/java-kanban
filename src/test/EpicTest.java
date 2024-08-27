@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EpicTest {
 
     @Test
-    public void EpicsWithSameIdShouldBeEquals() {
+    public void epicsWithSameIdShouldBeEquals() {
         TaskManager manager = Managers.getDefault();
         Epic epicOne = new Epic("Epic name", "Epic description");
         int epicOneId = manager.addNewEpic(epicOne);
@@ -22,7 +22,7 @@ class EpicTest {
     }
 
     @Test
-    public void epicsShouldNotStoreTheIdOfSubtasksThatAreNotRelevant () {
+    public void epicsShouldNotStoreTheIdOfSubtasksThatAreNotRelevant() {
         TaskManager manager = Managers.getDefault();
 
         Epic epicOne = new Epic("Epic name", "Epic description");
