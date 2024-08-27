@@ -8,12 +8,13 @@ public class Task {
     protected int id;
     protected TaskStatus status;
 
-    public Task(String name, String description, int id, TaskStatus status){
+    public Task(String name, String description, int id, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
     }
+
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
@@ -31,6 +32,7 @@ public class Task {
     public TaskStatus getStatus() {
         return status;
     }
+
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
