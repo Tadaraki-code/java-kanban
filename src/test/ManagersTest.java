@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagersTest {
 
     @Test
-    public void managersShouldReturnReadyToWorkObjects () {
+    public void managersShouldReturnReadyToWorkObjects() {
         TaskManager manager = Managers.getDefault();
-        assertNotNull (manager.getTasksList());
+        assertNotNull(manager.getTasksList());
 
         HistoryManager historyManager = Managers.getDefaultHistory();
-        assertNotNull (historyManager.getHistory());
+        assertNotNull(historyManager.getHistory());
 
     }
 
