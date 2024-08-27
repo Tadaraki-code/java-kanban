@@ -1,4 +1,4 @@
-package data_structures_elements;
+package dataStructuresElements;
 
 import tasks.Task;
 

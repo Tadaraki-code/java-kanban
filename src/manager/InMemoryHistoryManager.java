@@ -1,6 +1,6 @@
 package manager;
 
-import data_structures_elements.Node;
+import dataStructuresElements.Node;
 import tasks.Task;
 
 import java.util.ArrayList;
