@@ -2,23 +2,22 @@ import tasks.*;
 import manager.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
 
     public static void main(String[] args) {
-         TaskManager manager = Managers.getDefault();
+        TaskManager manager = Managers.getDefault();
+
 
         Task taskOne = new Task("Task name", "Task description",TaskStatus.NEW);
         int taskOneId = manager.addNewTask(taskOne);
         Task taskTwo = new Task("TaskTwo name", "Task description",TaskStatus.NEW);
         int taskTwoId = manager.addNewTask(taskTwo);
 
-        Epic epicOne = new Epic("Epic name", "Epic description");
-        int epicOneId = manager.addNewEpic(epicOne);
-
-        Epic epicTwo = new Epic("EpicTwo name", "EpicTwo description");
-        int epicTwoId = manager.addNewEpic(epicTwo);
+       Epic epicOne = new Epic("Epic name", "Epic description");
+       int epicOneId = manager.addNewEpic(epicOne);
 
         Subtask subtaskOne = new Subtask("subtaskOne name", "subtaskOne description",
                 TaskStatus.NEW,epicOneId);
@@ -29,55 +28,127 @@ public class Main {
         int subtaskTwoId = manager.addNewSubtask(subtaskTwo);
 
         Subtask subtaskThree = new Subtask("subtaskThree name", "subtaskThree description",
-                TaskStatus.NEW,epicOneId);
+               TaskStatus.NEW,epicOneId);
         int subtaskThreeId = manager.addNewSubtask(subtaskThree);
 
-        Subtask subtaskFour = new Subtask("subtaskThree name", "subtaskThree description",
-                TaskStatus.NEW,epicTwoId);
-        int subtaskFourId = manager.addNewSubtask(subtaskFour);
-
-        printAllTasks(manager);
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        Subtask subtaskOneUpdate = new Subtask("subtaskOne name", "subtaskOne description",subtaskOneId,
-                TaskStatus.IN_PROGRESS,epicOneId);
-        manager.updateSubtask(subtaskOneUpdate);
-        manager.getSubtask(subtaskOneId);
-        manager.getEpic(epicOneId);
-
-        manager.getEpic(epicTwoId);
-        manager.removeEpic(epicTwoId);
+        Epic epicTwo = new Epic("EpicTwo name", "EpicTwo description");
+        int epicTwoId = manager.addNewEpic(epicTwo);
 
         manager.getTask(taskOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
         manager.getTask(taskTwoId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
+        manager.getEpic(epicOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
+        manager.getTask(taskOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
+        manager.getSubtask(subtaskOneId);
+        manager.getSubtask(subtaskOneId);
+        manager.getSubtask(subtaskOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
         manager.getSubtask(subtaskTwoId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
 
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
 
-        printAllTasks(manager);
+        manager.getSubtask(subtaskThreeId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
+        manager.getSubtask(subtaskOneId);
+        manager.removeSubtask(subtaskThreeId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
 
         System.out.println();
         System.out.println("-".repeat(20));
         System.out.println();
 
 
-        manager.removeTask(taskOneId);
-        manager.removeSubtask(subtaskOneId);
-        manager.getEpic(epicOneId);
+        manager.removeTask(taskTwoId);
+        manager.getEpic(epicTwoId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
 
-        Subtask subtaskTwoUpdate = new Subtask("subtaskTwo name", "subtaskOne description",subtaskTwoId,
-                TaskStatus.IN_PROGRESS,epicOneId);
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
 
-        manager.updateSubtask(subtaskTwoUpdate);
-        manager.getSubtask(subtaskTwoId);
+        manager.removeEpic(epicOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
 
-        Epic epicOneUpdate = new Epic("Epic Update name", "Epic description",epicOneId);
-        manager.updateEpic(epicOneUpdate);
-        manager.getEpic(epicOneId);
-        manager.removeSubtask(subtaskTwoId);
-        printAllTasks(manager);
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
+        manager.getTask(taskOneId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(20));
+        System.out.println();
+
 
 
     }
