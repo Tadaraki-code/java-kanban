@@ -14,7 +14,7 @@ public class Task {
         this.id = id;
         this.status = status;
     }
-    public Task(String name,String description,TaskStatus status) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
