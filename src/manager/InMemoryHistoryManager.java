@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager implements HistoryManager{
     private final Map<Integer, Node> historyMap = new HashMap<>();
     private Node first;
     private Node last;
 
     @Override
+
     public void add(Task task) {
         remove(task.getId());
         Node newNode = linkLast(task);
@@ -21,6 +22,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
+
     public void remove(int id) {
         if(historyMap.get(id) == null) {
             return;
@@ -31,6 +33,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
     @Override
+
     public ArrayList<Task> getHistory() {
         return (ArrayList<Task>) getTasks();
     }
