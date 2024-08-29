@@ -53,10 +53,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTask(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
     public void cleanAllTasks() {
+        for (Integer taskId : tasks.keySet()) {
+            historyManager.remove(taskId);
+        }
         tasks.clear();
     }
 
@@ -133,7 +137,9 @@ public class InMemoryTaskManager implements TaskManager {
             ArrayList<Integer> subtasksId = epic.getSubtaskList();
             for (Integer subtaskId : subtasksId) {
                 subtasks.remove(subtaskId);
+                historyManager.remove(subtaskId);
             }
+            historyManager.remove(id);
             epics.remove(id);
         } else {
             System.out.println("Такого этика нет.");
@@ -142,7 +148,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void cleanAllEpics() {
+        for (Integer epicId : epics.keySet()) {
+            historyManager.remove(epicId);
+        }
         epics.clear();
+        for (Integer subtaskId : subtasks.keySet()) {
+            historyManager.remove(subtaskId);
+        }
         subtasks.clear();
     }
 
@@ -208,6 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.remove(id);
             epic.removeElementFromIdList(id);
             updateEpicStatus(epic);
+            historyManager.remove(id);
         } else {
             System.out.println("Такой подзадачи нет.");
         }
@@ -215,6 +228,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void cleanAllSubtask() {
+        for (Integer subtaskId : subtasks.keySet()) {
+            historyManager.remove(subtaskId);
+        }
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.cleanSubtaskList();
