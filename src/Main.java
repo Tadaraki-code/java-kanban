@@ -1,152 +1,52 @@
 import tasks.*;
 import manager.*;
 
-
+import java.io.File;
+import java.io.IOException;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager manager = Managers.getDefault();
 
 
-        Task taskOne = new Task("Task name", "Task description",TaskStatus.NEW);
+//        manager.getSubtask(subtaskTwoId);
+//        System.out.println("История:");
+//        for (Task task : manager.getHistory()) {
+//            System.out.println(task);
+//        }
+
+        File tempFile = null;
+
+        try {
+            tempFile = File.createTempFile("test",".csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FileBackedTaskManager manager = Managers.getDefault(tempFile);
+
+
+        Task taskOne = new Task("Task name", "Task description", TaskStatus.NEW);
         int taskOneId = manager.addNewTask(taskOne);
-        Task taskTwo = new Task("TaskTwo name", "Task description",TaskStatus.NEW);
-        int taskTwoId = manager.addNewTask(taskTwo);
 
-       Epic epicOne = new Epic("Epic name", "Epic description");
-       int epicOneId = manager.addNewEpic(epicOne);
-
+        Epic epicOne = new Epic("Epic name", "Epic description");
+        int epicOneId = manager.addNewEpic(epicOne);
         Subtask subtaskOne = new Subtask("subtaskOne name", "subtaskOne description",
                 TaskStatus.NEW,epicOneId);
+        Epic epicOneUpdate = new Epic("new Epic name","new Epic description",epicOneId);
+        manager.updateEpic(epicOneUpdate);
+
+
         int subtaskOneId = manager.addNewSubtask(subtaskOne);
 
-        Subtask subtaskTwo = new Subtask("subtaskTwo name", "subtaskTwo description",
-                TaskStatus.NEW,epicOneId);
-        int subtaskTwoId = manager.addNewSubtask(subtaskTwo);
+        Subtask subtaskOneUpdate = new Subtask("subtaskOne name", "subtaskOne description",
+                subtaskOneId,TaskStatus.DONE,epicOneId);
+        manager.updateSubtask(subtaskOneUpdate);
 
-        Subtask subtaskThree = new Subtask("subtaskThree name", "subtaskThree description",
-               TaskStatus.NEW,epicOneId);
-        int subtaskThreeId = manager.addNewSubtask(subtaskThree);
+        FileBackedTaskManager manager2 = FileBackedTaskManager.loadFromFile(tempFile);
+        printAllTasks(manager2);
 
-        Epic epicTwo = new Epic("EpicTwo name", "EpicTwo description");
-        int epicTwoId = manager.addNewEpic(epicTwo);
-
-        manager.getTask(taskOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getTask(taskTwoId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getEpic(epicOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getTask(taskOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getSubtask(subtaskOneId);
-        manager.getSubtask(subtaskOneId);
-        manager.getSubtask(subtaskOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getSubtask(subtaskTwoId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getSubtask(subtaskThreeId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getSubtask(subtaskOneId);
-        manager.removeSubtask(subtaskThreeId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-
-        manager.removeTask(taskTwoId);
-        manager.getEpic(epicTwoId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.removeEpic(epicOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
-
-        manager.getTask(taskOneId);
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-
-        System.out.println();
-        System.out.println("-".repeat(20));
-        System.out.println();
+        tempFile.deleteOnExit();
 
 
 

@@ -7,6 +7,9 @@ import manager.*;
 import tasks.Subtask;
 import tasks.TaskStatus;
 
+import java.io.File;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -14,7 +17,14 @@ class EpicTest {
 
     @Test
     public void epicsWithSameIdShouldBeEquals() {
-        TaskManager manager = Managers.getDefault();
+
+        File tempFile = null;
+        try {
+            tempFile = File.createTempFile("test",".csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FileBackedTaskManager manager = Managers.getDefault(tempFile);
         Epic epicOne = new Epic("Epic name", "Epic description");
         int epicOneId = manager.addNewEpic(epicOne);
         Epic epicOneUpdate = new Epic("New Name", "New description", epicOneId);
@@ -23,7 +33,14 @@ class EpicTest {
 
     @Test
     public void epicsShouldNotStoreTheIdOfSubtasksThatAreNotRelevant() {
-        TaskManager manager = Managers.getDefault();
+
+        File tempFile = null;
+        try {
+            tempFile = File.createTempFile("test",".csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FileBackedTaskManager manager = Managers.getDefault(tempFile);
 
         Epic epicOne = new Epic("Epic name", "Epic description");
         int epicOneId = manager.addNewEpic(epicOne);
@@ -39,6 +56,7 @@ class EpicTest {
         Subtask subtaskThree = new Subtask("subtaskThree name", "subtaskThree description",
                 TaskStatus.NEW,epicOneId);
         int subtaskThreeId = manager.addNewSubtask(subtaskThree);
+        tempFile.deleteOnExit();
 
 
         assertEquals(3,manager.getAllSubtask(epicOne).size());
