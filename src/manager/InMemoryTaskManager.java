@@ -20,6 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
     private int createId() {
         return ++id;
     }
+
     protected void setId(int id) {
         this.id = id;
     }
@@ -27,8 +28,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Методы для класса Task
     @Override
     public int addNewTask(Task task) {
-        if(task.getId() != 0) {
-            final int uniqueId = task.getId() ;
+
+        if (task.getId() != 0) {
+            final int uniqueId = task.getId();
             tasks.put(uniqueId, task);
             return uniqueId;
         }
@@ -81,8 +83,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Методы для класс Epic
     @Override
     public int addNewEpic(Epic epic) {
-        if(epic.getId() != 0) {
-            final int uniqueId = epic.getId() ;
+
+        if (epic.getId() != 0) {
+            final int uniqueId = epic.getId();
             epics.put(uniqueId, epic);
             updateEpicStatus(epic);
             return uniqueId;
@@ -192,9 +195,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Методы для класса SubTask
     @Override
     public Integer addNewSubtask(Subtask subtask) {
-        if(subtask.getId() != 0) {
+        if (subtask.getId() != 0) {
             Integer epicId = subtask.getEpicId();
-            final int uniqueId = subtask.getId() ;
+            final int uniqueId = subtask.getId();
             subtasks.put(uniqueId, subtask);
             epics.get(epicId).addSubtaskId(uniqueId);
             updateEpicStatus(epics.get(epicId));
@@ -238,7 +241,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeSubtask(int id) {
         if (subtasks.get(id) != null) {
             Subtask subtask = subtasks.get(id);
-            Epic epic = epics.get(subtask.getEpicId());;
+            Epic epic = epics.get(subtask.getEpicId());
+            ;
             subtasks.remove(id);
             epic.removeElementFromIdList(id);
             updateEpicStatus(epic);
