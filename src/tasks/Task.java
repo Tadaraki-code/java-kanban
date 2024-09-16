@@ -3,6 +3,7 @@ package tasks;
 import java.util.Objects;
 
 public class Task {
+    private final TaskTypes type = TaskTypes.Task;
     protected String name;
     protected String description;
     protected int id;
@@ -74,5 +75,9 @@ public class Task {
                 ", id=" + id +
                 ", status=" + status +
                 '}';
+    }
+
+    public TaskTypes getType() {
+        return type;
     }
 }

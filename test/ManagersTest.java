@@ -9,7 +9,7 @@ class ManagersTest {
 
     @Test
     public void managersShouldReturnReadyToWorkObjects() {
-        TaskManager manager = Managers.getDefault();
+        FileBackedTaskManager manager = Managers.getDefault();
         assertNotNull(manager.getTasksList());
 
         HistoryManager historyManager = Managers.getDefaultHistory();
