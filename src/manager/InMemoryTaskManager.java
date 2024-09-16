@@ -87,7 +87,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic.getId() != 0) {
             final int uniqueId = epic.getId();
             epics.put(uniqueId, epic);
-            updateEpicStatus(epic);
             return uniqueId;
         }
         final int uniqueId = createId();
@@ -242,7 +241,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtasks.get(id) != null) {
             Subtask subtask = subtasks.get(id);
             Epic epic = epics.get(subtask.getEpicId());
-            ;
             subtasks.remove(id);
             epic.removeElementFromIdList(id);
             updateEpicStatus(epic);

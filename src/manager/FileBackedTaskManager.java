@@ -18,7 +18,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(File file) {
         final FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try {
             final String allTasksInfo = Files.readString(file.toPath());
             final String[] lines = allTasksInfo.split(System.lineSeparator());
             int counter = 0;
@@ -39,7 +39,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return taskManager;
     }
 
-    protected void save() {
+    private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(CSVFormat.getHeader());
             writer.newLine();
