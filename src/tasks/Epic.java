@@ -8,11 +8,11 @@ public class Epic extends Task {
     private LocalDateTime endTime;
 
     public Epic(String name, String description, int id) {
-        super(name, description, id, TaskStatus.NEW, null, null);
+        super(name, description, id, TaskStatus.NEW);
     }
 
     public Epic(String name, String description) {
-        super(name, description, TaskStatus.NEW, null, null);
+        super(name, description, TaskStatus.NEW);
     }
 
     public void addSubtaskId(int id) {

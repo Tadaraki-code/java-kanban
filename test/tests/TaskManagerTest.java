@@ -181,7 +181,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void addNewSubtask() {
         Subtask secondSubtask = new Subtask("subtaskOne name", "subtaskOne description",
                 TaskStatus.NEW, epic.getId(), Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 9, 21, 19, 15));
+                LocalDateTime.of(2024, 9, 22, 19, 15));
         int secondSubtaskId = taskManager.addNewSubtask(secondSubtask);
 
         assertEquals(secondSubtask.getName(), taskManager.getSubtask(secondSubtaskId).getName());
@@ -235,7 +235,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void cleanAllSubtask() {
         Subtask secondSubtask = new Subtask("subtaskOne name", "subtaskOne description",
                 TaskStatus.NEW, epic.getId(), Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 9, 21, 19, 15));
+                LocalDateTime.of(2024, 9, 22, 19, 15));
         int secondSubtaskId = taskManager.addNewSubtask(secondSubtask);
 
         assertEquals(2, taskManager.getSubtasksList().size());

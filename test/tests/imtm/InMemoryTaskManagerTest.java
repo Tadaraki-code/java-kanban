@@ -41,11 +41,12 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         Task secondTask = new Task("Second Task name", "Second Task description", TaskStatus.NEW, Duration.ofMinutes(15),
                 LocalDateTime.of(2024, 9, 19, 19, 15));
         int taskSecondId = taskManager.addNewTask(secondTask);
+        assertEquals(-1,taskSecondId);
 
         prioritize = taskManager.getPrioritizedTask();
         prioritizeList = new ArrayList<>(prioritize);
         assertEquals(2, prioritize.size());
-        assertEquals(2, taskManager.getTasksList().size());
+        assertEquals(1, taskManager.getTasksList().size());
 
         assertEquals(prioritizeList.getFirst().getId(), task.getId());
         assertEquals(prioritizeList.getFirst().getType(), task.getType());
@@ -55,10 +56,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertEquals(prioritizeList.getLast().getType(), subtask.getType());
         assertEquals(prioritizeList.getLast().getName(), subtask.getName());
 
-        Task updateSecondTask = new Task("Second Task name", "Second Task description",
-                taskSecondId, TaskStatus.NEW, Duration.ofMinutes(15),
+        Task updateSecondTask = new Task("Second Task name", "Second Task description", TaskStatus.NEW, Duration.ofMinutes(15),
                 LocalDateTime.of(2024, 10, 19, 19, 15));
-        taskManager.updateTask(updateSecondTask);
+        taskSecondId = taskManager.addNewTask(updateSecondTask);
 
         prioritize = taskManager.getPrioritizedTask();
         prioritizeList = new ArrayList<>(prioritize);
@@ -97,18 +97,23 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
         prioritize = taskManager.getPrioritizedTask();
         prioritizeList = new ArrayList<>(prioritize);
-        assertEquals(1, prioritize.size());
+        assertEquals(2, prioritize.size());
+        System.out.println(prioritize);
         assertEquals(2, taskManager.getTasksList().size());
-        assertEquals(prioritizeList.getFirst().getId(), updateSecondTask.getId());
-        assertEquals(prioritizeList.getFirst().getType(), updateSecondTask.getType());
-        assertEquals(prioritizeList.getFirst().getName(), updateSecondTask.getName());
+        assertEquals(prioritizeList.getFirst().getId(), task.getId());
+        assertEquals(prioritizeList.getFirst().getType(), task.getType());
+        assertEquals(prioritizeList.getFirst().getName(), task.getName());
+
+        assertEquals(prioritizeList.getLast().getId(), updateSecondTask.getId());
+        assertEquals(prioritizeList.getLast().getType(), updateSecondTask.getType());
+        assertEquals(prioritizeList.getLast().getName(), updateSecondTask.getName());
     }
 
     @Test
     public void inMemoryTaskManagerShouldWorkCorrectly() {
 
         Task secondTask = new Task("Second Task name", "Second Task description", TaskStatus.NEW, Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 9, 19, 19, 15));
+                LocalDateTime.of(2024, 9, 18, 19, 15));
         int taskSecondId = taskManager.addNewTask(secondTask);
 
         assertEquals("Second Task description", taskManager.getTask(taskSecondId).getDescription());
@@ -125,7 +130,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertNotNull(taskManager.getEpic(epicOneId));
 
         Subtask subtaskOne = new Subtask("Subtask", "Subtask description", TaskStatus.NEW, epicOneId, Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 9, 19, 19, 15));
+                LocalDateTime.of(2024, 9, 19, 21, 15));
         int subtaskOneId = taskManager.addNewSubtask(subtaskOne);
 
         assertEquals("Subtask", taskManager.getSubtask(subtaskOneId).getName());
@@ -138,7 +143,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     public void allFieldsInAllTasksDoNotChangeWhenAdded() {
 
         Task oneTask = new Task("Second Task name", "Second Task description", TaskStatus.NEW, Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 9, 19, 19, 15));
+                LocalDateTime.of(2024, 9, 20, 19, 15));
         int taskOneId = taskManager.addNewTask(oneTask);
 
         assertEquals("Second Task description", taskManager.getTask(taskOneId).getDescription());

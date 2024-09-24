@@ -36,11 +36,13 @@ public class InMemoryTaskManager implements TaskManager {
             addToPrioritizedSet(task);
             return uniqueId;
         }
-        final int uniqueId = createId();
-        task.setId(uniqueId);
-        tasks.put(uniqueId, task);
-        addToPrioritizedSet(task);
-        return uniqueId;
+        if (addToPrioritizedSet(task)) {
+            tasks.put(task.getId(), task);
+            return task.getId();
+        }
+        System.out.println("Задача не может быть добавлена, " +
+                "так как установленное в задаче время, пересекается уже существующими задачами!");
+        return -1;
     }
 
     @Override
@@ -60,9 +62,14 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         prioritizedTask.remove(tasks.get(task.getId()));
-        addToPrioritizedSet(task);
-        tasks.put(task.getId(), task);
-
+        if (addToPrioritizedSet(task)) {
+            tasks.put(task.getId(), task);
+            return;
+        }
+        //Сохранение в приоритеты предыдущего состояния.
+        addToPrioritizedSet(tasks.get(task.getId()));
+        System.out.println("Задача не былв обновлена," +
+                " так как установленное в задаче время,пересекается уже существующими задачами!");
     }
 
     @Override
@@ -163,7 +170,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .filter(task -> epic.getSubtaskList().contains(task.getId()))
                 .toList();
 
-        if (!epic.getSubtaskList().isEmpty() & !tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
 
             epic.setStartTime(tasks.getFirst().getStartTime());
             epic.setEndTime(tasks.getLast().getEndTime());
@@ -181,12 +188,24 @@ public class InMemoryTaskManager implements TaskManager {
         boolean sameStartDate = prioritizedTask.stream()
                 .noneMatch(task1 -> task1.getStartTime().equals(task.getStartTime()));
 
-        boolean taskStartsWhenOtherTaskContinues = prioritizedTask.stream()
-                .noneMatch(task1 -> task.getStartTime()
-                        .isBefore(task1.getStartTime().plusMinutes(task1.getDuration().toMinutes())) &
-                        task.getStartTime().isAfter(task1.getStartTime()));
+        boolean taskEndedWhenOtherTaskStartAndContinues = prioritizedTask.stream()
+                .noneMatch(task1 -> task.getEndTime().isAfter(task1.getStartTime()) &
+                        task.getEndTime().isBefore(task1.getEndTime()));
 
-        return sameStartDate & taskStartsWhenOtherTaskContinues;
+        boolean taskStartedBeforeOtherTaskFinished = prioritizedTask.stream()
+                .noneMatch(task1 -> task.getStartTime().isBefore(task1.getEndTime()) &
+                        task.getEndTime().isAfter(task1.getEndTime()));
+
+        boolean taskStartsWhenOtherTaskContinues = prioritizedTask.stream()
+                .noneMatch(task1 -> task.getStartTime().isAfter(task1.getStartTime()) &
+                        task.getEndTime().isBefore(task1.getEndTime()));
+
+        boolean timeOfOneTaskIsCompletelyContainedInAnother = prioritizedTask.stream()
+                .noneMatch(task1 -> task.getStartTime().isBefore(task1.getStartTime()) &
+                        task.getEndTime().isAfter(task1.getEndTime()));
+
+        return sameStartDate & taskStartsWhenOtherTaskContinues & taskEndedWhenOtherTaskStartAndContinues &
+                taskStartedBeforeOtherTaskFinished & timeOfOneTaskIsCompletelyContainedInAnother;
 
     }
 
@@ -244,15 +263,17 @@ public class InMemoryTaskManager implements TaskManager {
             calculateEpicTime(epics.get(subtask.getEpicId()));
             return uniqueId;
         }
-        Integer epicId = subtask.getEpicId();
-        final int uniqueId = createId();
-        subtask.setId(uniqueId);
-        subtasks.put(uniqueId, subtask);
-        epics.get(epicId).addSubtaskId(uniqueId);
-        updateEpicStatus(epics.get(epicId));
-        addToPrioritizedSet(subtask);
-        calculateEpicTime(epics.get(subtask.getEpicId()));
-        return uniqueId;
+        if (addToPrioritizedSet(subtask)) {
+            Integer epicId = subtask.getEpicId();
+            subtasks.put(subtask.getId(), subtask);
+            epics.get(epicId).addSubtaskId(subtask.getId());
+            updateEpicStatus(epics.get(epicId));
+            calculateEpicTime(epics.get(subtask.getEpicId()));
+            return subtask.getId();
+        }
+        System.out.println("Подзадача не может быть добавлена, " +
+                "так как установленное в подзадаче время, пересекается уже существующими задачами!");
+        return -1;
     }
 
     @Override
@@ -273,11 +294,17 @@ public class InMemoryTaskManager implements TaskManager {
         }
         if (subtasks.get(subtask.getId()).getEpicId() == subtask.getEpicId()) {
             prioritizedTask.remove(subtasks.get(subtask.getId()));
-            addToPrioritizedSet(subtask);
-            subtasks.put(subtask.getId(), subtask);
-            Epic epic = epics.get(subtask.getEpicId());
-            calculateEpicTime(epic);
-            updateEpicStatus(epic);
+            if (addToPrioritizedSet(subtask)) {
+                subtasks.put(subtask.getId(), subtask);
+                Epic epic = epics.get(subtask.getEpicId());
+                calculateEpicTime(epic);
+                updateEpicStatus(epic);
+                return;
+            }
+            //Сохранение в приоритеты предыдущего состояния.
+            addToPrioritizedSet(subtasks.get(subtask.getId()));
+            System.out.println("Подзадача не будет обновлена," +
+                    " так как установленное в подзадаче время,пересекается уже существующими задачами!");
         } else {
             System.out.println("Подзадача с таким id пренадлежит другому эпику,введитие коректный id эпика.");
         }
@@ -335,19 +362,18 @@ public class InMemoryTaskManager implements TaskManager {
         return prioritizedTask;
     }
 
-    private void addToPrioritizedSet(Task task) {
+    private boolean addToPrioritizedSet(Task task) {
         if (task.getStartTime() != null & task.getDuration() != null) {
-            if (overlapCalculator(task)) {
-                prioritizedTask.add(task);
-            } else {
-                System.out.println("Введенное вами в задаче " + task.getName() + " с id " + task.getId() +
-                        " время пересекается с уже существующей задачей! " +
-                        "Эта задача не будет отображаться в списке приоритетов.");
+            if (task.getId() == 0) {
+                task.setId(createId());
             }
-        } else {
-            System.out.println("В задаче " + task.getName() + " с id " + task.getId() + " не установлено время! " +
-                    "Эта задача не будет отображаться в списке приоритетов.");
+            if (overlapCalculator(task)) {
+                return prioritizedTask.add(task);
+            } else {
+                return false;
+            }
         }
-
+        return true;
     }
 }
+

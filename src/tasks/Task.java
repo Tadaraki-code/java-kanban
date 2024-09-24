@@ -12,6 +12,19 @@ public class Task implements Comparable<Task> {
     protected LocalDateTime startTime;
     protected Duration duration;
 
+    public Task(String name, String description, TaskStatus status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(String name, String description, int id, TaskStatus status) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+    }
+
     public Task(String name, String description, int id, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
@@ -54,7 +67,6 @@ public class Task implements Comparable<Task> {
     }
 
     public void setStartTime(LocalDateTime startTime) {
-        //String start = startTime.format(CSVFormat.FORMATTER);
         this.startTime = startTime;
     }
 
@@ -108,7 +120,10 @@ public class Task implements Comparable<Task> {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plusMinutes(duration.toMinutes());
+        if(!(this.startTime == null)) {
+            return startTime.plusMinutes(duration.toMinutes());
+        }
+        return null;
     }
 
     @Override
