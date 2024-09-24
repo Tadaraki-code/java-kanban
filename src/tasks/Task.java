@@ -120,7 +120,7 @@ public class Task implements Comparable<Task> {
     }
 
     public LocalDateTime getEndTime() {
-        if(!(this.startTime == null)) {
+        if (!(this.startTime == null)) {
             return startTime.plusMinutes(duration.toMinutes());
         }
         return null;

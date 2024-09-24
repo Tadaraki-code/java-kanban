@@ -41,7 +41,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         Task secondTask = new Task("Second Task name", "Second Task description", TaskStatus.NEW, Duration.ofMinutes(15),
                 LocalDateTime.of(2024, 9, 19, 19, 15));
         int taskSecondId = taskManager.addNewTask(secondTask);
-        assertEquals(-1,taskSecondId);
+        assertEquals(-1, taskSecondId);
 
         prioritize = taskManager.getPrioritizedTask();
         prioritizeList = new ArrayList<>(prioritize);
