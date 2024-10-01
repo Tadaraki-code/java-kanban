@@ -1,5 +1,2 @@
 id,type,name,status,description,epic
-1,Task,Updete name,DONE,Update d,15,2024-08-22  19:15
-4,Task,Task name4,NEW,Task description,15,2024-08-22  19:20
-2,Epic,new Epic name,DONE,new Epic description
-3,Subtask,subtaskOne name,DONE,subtaskOne description,2,15,2024-08-21  19:15
+

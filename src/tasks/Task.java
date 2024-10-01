@@ -1,10 +1,11 @@
 package tasks;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task implements Comparable<Task> {
-    private final TaskTypes type = TaskTypes.Task;
+    private TaskTypes type;
     protected String name;
     protected String description;
     protected int id;
@@ -16,6 +17,7 @@ public class Task implements Comparable<Task> {
         this.name = name;
         this.description = description;
         this.status = status;
+        setType(TaskTypes.Task);
     }
 
     public Task(String name, String description, int id, TaskStatus status) {
@@ -23,6 +25,7 @@ public class Task implements Comparable<Task> {
         this.description = description;
         this.id = id;
         this.status = status;
+        setType(TaskTypes.Task);
     }
 
     public Task(String name, String description, int id, TaskStatus status,
@@ -33,6 +36,7 @@ public class Task implements Comparable<Task> {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+        setType(TaskTypes.Task);
     }
 
     public Task(String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
@@ -41,6 +45,7 @@ public class Task implements Comparable<Task> {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+        setType(TaskTypes.Task);
     }
 
     public int getId() {
@@ -118,6 +123,10 @@ public class Task implements Comparable<Task> {
 
     public TaskTypes getType() {
         return type;
+    }
+
+    protected void setType(TaskTypes type) {
+         this.type = type;
     }
 
     public LocalDateTime getEndTime() {

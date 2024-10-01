@@ -28,8 +28,8 @@ class TaskTest {
         this.file = new File("resources/test_" + System.nanoTime() + ".csv");
         this.manager = new FileBackedTaskManager(file);
 
-        this.task= new Task("Task name", "Task description", TaskStatus.NEW, Duration.ofMinutes(15),
-                LocalDateTime.of(2024,9,19,19,15));
+        this.task = new Task("Task name", "Task description", TaskStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 9, 19, 19, 15));
         int taskOneId = manager.addNewTask(task);
     }
 
@@ -43,10 +43,10 @@ class TaskTest {
 
         Task taskOneUpdate = new Task("New Name", "New description", task.getId(),
                 TaskStatus.DONE, Duration.ofMinutes(15),
-                LocalDateTime.of(2024,9,19,19,15));
+                LocalDateTime.of(2024, 9, 19, 19, 15));
         manager.updateTask(taskOneUpdate);
 
-     assertEquals(task,taskOneUpdate);
+        assertEquals(task, taskOneUpdate);
     }
 
 

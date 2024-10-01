@@ -4,8 +4,9 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-
 import java.util.List;
+import java.util.TreeSet;
+
 
 public interface TaskManager {
     //Методы для класса Task
@@ -13,7 +14,7 @@ public interface TaskManager {
 
     Task getTask(int id);
 
-    void updateTask(Task task);
+    boolean updateTask(Task task);
 
     void removeTask(int id);
 
@@ -26,7 +27,7 @@ public interface TaskManager {
 
     Epic getEpic(int id);
 
-    void updateEpic(Epic epic);
+    boolean updateEpic(Epic epic);
 
     void removeEpic(int id);
 
@@ -41,7 +42,7 @@ public interface TaskManager {
 
     Subtask getSubtask(int id);
 
-    void updateSubtask(Subtask subtask);
+    boolean updateSubtask(Subtask subtask);
 
     void removeSubtask(int id);
 
@@ -52,4 +53,6 @@ public interface TaskManager {
     void printAllTasks();
 
     List<Task> getHistory();
+
+    TreeSet<Task> getPrioritizedTask();
 }
