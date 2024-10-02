@@ -83,8 +83,8 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
         if (jsonElement.isJsonObject()) {
             Epic epic = gson.fromJson(body, Epic.class);
             if (epic.getId() == 0) {
-                manager.addNewEpic(epic);
-                super.sendText(exchange, "Эпик успешно добален!", 201);
+                int id = manager.addNewEpic(epic);
+                super.sendText(exchange, "Эпик успешно добавлен. ID добавленого эпика: " + id +"!", 201);
             } else {
                 if (manager.updateEpic(epic)) {
                     super.sendText(exchange, "Эпик успешно обнавлен!", 201);

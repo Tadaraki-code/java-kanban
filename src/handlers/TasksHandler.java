@@ -81,10 +81,12 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         if (jsonElement.isJsonObject()) {
             Task task = gson.fromJson(body, Task.class);
             if (task.getId() == 0) {
-                if (manager.addNewTask(task) == -1) {
+                int id = manager.addNewTask(task);
+                if (id == -1) {
                     super.sendHasInteractions(exchange, "Время задачи пересекаеться с уже существующей задачей!");
                 } else {
-                    super.sendText(exchange, "Задача успешно добалена!", 201);
+                    super.sendText(exchange, "Задача успешно добалена, ID добавленой задачи: " + id + "!",
+                            201);
                 }
             } else {
                 if (manager.updateTask(task)) {
@@ -120,7 +122,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             super.sendText(exchange, "Список задач пуст!", 200);
         } else {
             manager.cleanAllTasks();
-            super.sendText(exchange, "задачи успешно удалены!", 200);
+            super.sendText(exchange, "Задачи успешно удалены!", 200);
         }
 
     }

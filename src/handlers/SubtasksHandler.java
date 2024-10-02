@@ -84,9 +84,11 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         if (jsonElement.isJsonObject()) {
             Subtask subtask = gson.fromJson(body, Subtask.class);
             if (subtask.getId() == 0) {
+                int id = manager.addNewSubtask(subtask);
                 if ((manager.getEpicsList().stream().anyMatch(epic -> epic.getId() == subtask.getEpicId())
-                        && manager.addNewSubtask(subtask) != -1)) {
-                    super.sendText(exchange, "Подзадача успешно добалена!", 201);
+                        && id != -1)) {
+                    super.sendText(exchange, "Подзадача успешно добалена, ID добавлейно подзадачи: " + id + "!"
+                            , 201);
                 } else {
                     super.sendHasInteractions(exchange, "Время подзадачи пересекаеться с уже существующей задачей," +
                             " или пренадлежит несуществующему эпику!");
@@ -100,7 +102,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             }
         } else {
             exchange.sendResponseHeaders(400, 0);
-            exchange.getResponseBody().write("Поля подзадчи заполнены не коректно!".getBytes());
+            exchange.getResponseBody().write("Поля подзадчи заполнены некоректно!".getBytes());
             exchange.close();
         }
 
@@ -111,10 +113,10 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         int subtaskId = Integer.parseInt(pathParts[2]);
 
         if (manager.getSubtask(subtaskId) == null) {
-            super.sendNotFound(exchange, "Такой задачи нет!");
+            super.sendNotFound(exchange, "Такой подзадачи нет!");
         } else {
             manager.removeSubtask(subtaskId);
-            super.sendText(exchange, "Задача успешно удалена", 200);
+            super.sendText(exchange, "Подзадача успешно удалена", 200);
         }
 
     }
