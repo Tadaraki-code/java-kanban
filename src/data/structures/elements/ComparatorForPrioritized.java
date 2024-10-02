@@ -9,8 +9,8 @@ public class ComparatorForPrioritized implements Comparator<Task> {
     @Override
     public int compare(Task t1, Task t2) {
         return Comparator
-                .comparing(Task::getId) // Сравнение по id
-                .thenComparing(Task::getStartTime, Comparator.nullsFirst(Comparator.naturalOrder())) // Затем по startTime
+                .comparing((Task t) -> t.getDuration() != null ? t.getDuration().toMinutes() : Long.MAX_VALUE)
+                .thenComparing(Task::getStartTime, Comparator.nullsFirst(Comparator.naturalOrder()))
                 .compare(t1, t2);
     }
 }
